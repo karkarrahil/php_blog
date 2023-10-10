@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
 
     if ($result) {
         // echo "<p>inserted successfully!<p>";
-        header('location:display.php');
+        header('location:login.php');
     } else {
         echo "<p>not inserted!<p>";
     }

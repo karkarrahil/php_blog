@@ -1,6 +1,18 @@
 <?php
 include 'connect.php';
+session_start(); // Start the session
 
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    // User is not logged in, redirect to login.php
+    header('location: login.php');
+    exit;
+}
+
+if (isset($_POST['logout'])) {
+    // Unset all of the session variables and destroy the session.
+    session_destroy();
+    header('location: login.php');
+}
 
 ?>
 
@@ -16,9 +28,15 @@ include 'connect.php';
 </head>
 
 <body>
-    <div>
+    <div class="d-flex justify-content-between">
 
-        <a href="index.php" class="btn btn-primary">ADD</a>
+        <button class="btn btn-primary">
+            <a href="index.php" class="text-light">ADD POST</a>
+        </button>
+        <form method="post">
+            <button type="submit" class="btn btn-danger mx-4" name="logout">Logout</button>
+        </form>
+
     </div>
     <table class="table mt-4 ">
         <thead>
@@ -42,12 +60,12 @@ include 'connect.php';
                     $password = $row['password'];
                     echo '
                         <tr>
-                        <th>'.$id.'</th>
-                        <td>'.$username.'</td>
-                        <td>'.$email.'</td>
-                        <td>'.$password.' </td>
-                        <td><a href="update.php?up_id='.$id.'"> <button>edit</button></a>
-                        <a href="delete.php?id='.$id.'"> <button>delete</button></a>
+                        <th>' . $id . '</th>
+                        <td>' . $username . '</td>
+                        <td>' . $email . '</td>
+                        <td>' . $password . ' </td>
+                        <td><a href="update.php?up_id=' . $id . '"> <button>edit</button></a>
+                        <a href="delete.php?id=' . $id . '"> <button>delete</button></a>
                         </td>
                         </tr>
                     ';

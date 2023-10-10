@@ -1,6 +1,6 @@
 <?php
 include 'connect.php';
-
+session_start();
 if (isset($_POST['login'])) {
     $password = $_POST['password'];
     $email = $_POST['email'];
@@ -11,15 +11,22 @@ if (isset($_POST['login'])) {
     if (!$result) {
         echo "Error: " . mysqli_error($conn);
     } else {
-        
+
         $num_rows = mysqli_num_rows($result);
 
         if ($num_rows === 1) {
+            $_SESSION['loggedin'] = true;
             header('location:display.php');
         } else {
             echo "Email and password incorrect!";
         }
     }
+}
+
+if (isset($_SESSION['loggedin'])) {
+    // User is not logged in, redirect to login.php
+    header('location: display.php');
+    exit;
 }
 
 ?>
